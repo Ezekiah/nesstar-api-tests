@@ -30,7 +30,7 @@ public class NesstarServer {
 		this.serverURI = serverURI;
 		this.nesstarDB = NesstarDBFactory.getInstance();
 		this.server = nesstarDB.getServer(serverURI);
-		this.server.login("admin", "physix10");
+		this.server.login("admin", "");
 	}
 	
 
