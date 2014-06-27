@@ -1,9 +1,15 @@
 package com.nesstar.demo;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import org.apache.log4j.lf5.util.StreamUtils;
+
+import com.nesstar.api.NesstarDB;
 import com.nesstar.api.NesstarList;
 import com.nesstar.api.NotAuthorizedException;
 import com.nesstar.api.Study;
@@ -15,9 +21,11 @@ import com.nesstar.api.publishing.StudyPublishingBuilder;
 
 public final class NesstarAPI extends NesstarServer{
 	
+	protected NesstarList<Study> allStudies;
 
-	public NesstarAPI() throws IOException, URISyntaxException {
+	public NesstarAPI() throws IOException, URISyntaxException, NotAuthorizedException {
 		super(new URI("http://127.0.0.1:8085"));
+		allStudies = server.getBank(Study.class).getAll();
 	}
 
 	public String getListText() throws NotAuthorizedException, IOException {
@@ -39,8 +47,9 @@ public final class NesstarAPI extends NesstarServer{
 			String studyListText = nesstarAPI.getListText();
 			System.out.println(studyListText);
 			
+			nesstarAPI.getAllStudyDDI();
 			
-			nesstarAPI.publishStudy("test.xml");
+			//nesstarAPI.publishStudy("test.xml");
 			//nesstarAPI.deleteStudy("fr.cdsp.ddi.PEF2007V1P4");
 
 
@@ -71,6 +80,38 @@ public final class NesstarAPI extends NesstarServer{
 		//server.deleteStudy("test!gor");
 		//nesstarDB.clear();
 
+	}
+	
+	
+	public void getAllStudyDDI() throws IOException, NotAuthorizedException {
+		for (Study study : allStudies) {
+			study.getDDI();
+			File file = new File("/home/ala/DDIs/"+study.getId()+".xml");
+			String content = new String(StreamUtils.getBytes(study.getDDI()));
+			
+			try (FileOutputStream fop = new FileOutputStream(file)) {
+				 
+				// if file doesn't exists, then create it
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+	 
+				// get the content in bytes
+				byte[] contentInBytes = content.getBytes();
+	 
+				fop.write(contentInBytes);
+				fop.flush();
+				fop.close();
+	 
+				System.out.println("Done");
+	 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
 	}
 	
 	public void deleteStudy(String id) {
