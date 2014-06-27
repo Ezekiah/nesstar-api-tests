@@ -24,7 +24,7 @@ public final class NesstarAPI extends NesstarServer{
 	protected NesstarList<Study> allStudies;
 
 	public NesstarAPI() throws IOException, URISyntaxException, NotAuthorizedException {
-		super(new URI("http://127.0.0.1:8085"));
+		super();
 		allStudies = server.getBank(Study.class).getAll();
 	}
 
@@ -56,14 +56,22 @@ public final class NesstarAPI extends NesstarServer{
 			if(args[0].equals("listStudies")){
 				String studyListText = nesstarAPI.getListText();
 				System.out.println("Launching... "+args[0]);
+				System.out.println(studyListText);
+			}
+			
+			
+			if(args[0].equals("deleteStudy")){
+				nesstarAPI.deleteStudy(args[1]);
+				System.out.println("Launching... "+args[0]);
+			}
+			
+			if(args[0].equals("getAllStudiesDDIs")){
+				nesstarAPI.getAllStudiesDDIs(args[1]); //arg is path where DDIs are saved
+				System.out.println("Launching... "+args[0]);
 			}
 			
 			
 			
-			//nesstarAPI.getAllStudyDDI();
-
-			//nesstarAPI.publishStudy("test.xml");
-			//nesstarAPI.deleteStudy("fr.cdsp.ddi.PEF2007V1P4");
 
 
 		} catch (IOException ioe) {
@@ -96,10 +104,10 @@ public final class NesstarAPI extends NesstarServer{
 	}
 
 
-	public void getAllStudyDDI() throws IOException, NotAuthorizedException {
+	public void getAllStudiesDDIs(String write_path) throws IOException, NotAuthorizedException {
 		for (Study study : allStudies) {
 			study.getDDI();
-			File file = new File("/home/ala/DDIs/"+study.getId()+".xml");
+			File file = new File(write_path+"/"+study.getId()+".xml");
 			String content = new String(StreamUtils.getBytes(study.getDDI()));
 
 			try (FileOutputStream fop = new FileOutputStream(file)) {

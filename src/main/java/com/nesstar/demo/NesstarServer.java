@@ -21,7 +21,7 @@ public class NesstarServer {
 
 
 
-	public NesstarServer (URI serverURI) throws IOException, URISyntaxException {
+	public NesstarServer () throws IOException, URISyntaxException {
 		loadParams();
 		this.nesstarDB = NesstarDBFactory.getInstance();
 		this.server = nesstarDB.getServer(serverURI);
