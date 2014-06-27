@@ -33,6 +33,7 @@ public final class NesstarAPI extends NesstarServer{
 		StringBuilder studyLabelList = new StringBuilder();
 		for (Study study : allStudies) {
 			studyLabelList.append(study.getLabel());
+			studyLabelList.append(System.getProperty("line.separator"));
 			studyLabelList.append(study.getId());
 			studyLabelList.append(System.getProperty("line.separator"));
 		}
@@ -47,7 +48,7 @@ public final class NesstarAPI extends NesstarServer{
 			String studyListText = nesstarAPI.getListText();
 			System.out.println(studyListText);
 			
-			nesstarAPI.getAllStudyDDI();
+			//nesstarAPI.getAllStudyDDI();
 			
 			//nesstarAPI.publishStudy("test.xml");
 			//nesstarAPI.deleteStudy("fr.cdsp.ddi.PEF2007V1P4");
