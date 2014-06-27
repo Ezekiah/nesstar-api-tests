@@ -2,8 +2,8 @@
    http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/200/XMLSchema-instance">
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <maven.compiler.source>1.6</maven.compiler.source>
-      <maven.compiler.target>1.6</maven.compiler.target>
+      <maven.compiler.source>1.7</maven.compiler.source>
+      <maven.compiler.target>1.7</maven.compiler.target>
    </properties>
    <repositories>
       <repository>
@@ -54,6 +54,38 @@
 	    
 	  </configuration>
 	</plugin>
+	
+	
+	 <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <inherited>true</inherited>
+      <configuration>
+            <verbose>true</verbose>
+            <fork>true</fork>
+            <executable>"${env.JAVA_HOME}/bin/javac"</executable>
+            <compilerVersion>1.7</compilerVersion>
+            <compilerArguments>
+             <encoding>${project.build.sourceEncoding}</encoding>
+            </compilerArguments>
+            <source>1.7</source>
+            <target>1.7</target>
+            
+            
+            <arguments>
+            <argument>-Djava.library.path=${project.build.directory}/lib</argument>
+            <argument>-classpath</argument>
+            <classpath />
+            <argument>com.example.app.MainClass</argument>
+            <argument>-a</argument>
+            <argument>${argumentA}</argument>
+            <argument>-b</argument>
+            <argument>${argumentB}</argument>
+        </arguments>
+            
+      </configuration>
+</plugin>
+	
     </plugins>
     <resources>
     <resource>

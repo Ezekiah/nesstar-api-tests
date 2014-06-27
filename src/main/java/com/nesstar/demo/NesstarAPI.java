@@ -20,7 +20,7 @@ import com.nesstar.api.publishing.PublishingException;
 import com.nesstar.api.publishing.StudyPublishingBuilder;
 
 public final class NesstarAPI extends NesstarServer{
-	
+
 	protected NesstarList<Study> allStudies;
 
 	public NesstarAPI() throws IOException, URISyntaxException, NotAuthorizedException {
@@ -42,14 +42,26 @@ public final class NesstarAPI extends NesstarServer{
 
 	public static void main(String[] args) throws URISyntaxException, NotAuthorizedException, InconsistentDDIException, MalformedDDIexception, DDIparsingException, PublishingException {
 		NesstarAPI nesstarAPI;
-
+		
+		
 		try {
 			nesstarAPI = new NesstarAPI();
-			String studyListText = nesstarAPI.getListText();
-			System.out.println(studyListText);
+			
+
+			if(args[0].equals("publishStudy")){
+				nesstarAPI.publishStudy(args[1]);
+				System.out.println("Launching... "+args[0]);
+			}
+			
+			if(args[0].equals("listStudies")){
+				String studyListText = nesstarAPI.getListText();
+				System.out.println("Launching... "+args[0]);
+			}
+			
+			
 			
 			//nesstarAPI.getAllStudyDDI();
-			
+
 			//nesstarAPI.publishStudy("test.xml");
 			//nesstarAPI.deleteStudy("fr.cdsp.ddi.PEF2007V1P4");
 
@@ -59,7 +71,7 @@ public final class NesstarAPI extends NesstarServer{
 		}
 	}
 
-	
+
 	public void publishStudy(String DDIresourceName) throws IOException, PublishingException, NotAuthorizedException, URISyntaxException, DDIparsingException, InconsistentDDIException, MalformedDDIexception {
 
 		try {
@@ -82,41 +94,41 @@ public final class NesstarAPI extends NesstarServer{
 		//nesstarDB.clear();
 
 	}
-	
-	
+
+
 	public void getAllStudyDDI() throws IOException, NotAuthorizedException {
 		for (Study study : allStudies) {
 			study.getDDI();
 			File file = new File("/home/ala/DDIs/"+study.getId()+".xml");
 			String content = new String(StreamUtils.getBytes(study.getDDI()));
-			
+
 			try (FileOutputStream fop = new FileOutputStream(file)) {
-				 
+
 				// if file doesn't exists, then create it
 				if (!file.exists()) {
 					file.createNewFile();
 				}
-	 
+
 				// get the content in bytes
 				byte[] contentInBytes = content.getBytes();
-	 
+
 				fop.write(contentInBytes);
 				fop.flush();
 				fop.close();
-	 
+
 				System.out.println("Done");
-	 
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
-		
+
+
 	}
-	
+
 	public void deleteStudy(String id) {
-	 	try {
+		try {
 			server.deleteStudy(id);
 		} catch (NotAuthorizedException e) {
 			// TODO Auto-generated catch block
@@ -125,8 +137,8 @@ public final class NesstarAPI extends NesstarServer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 
 }

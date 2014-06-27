@@ -18,9 +18,9 @@ public class NesstarServer {
 	protected Server server;
 	protected String username;
 	protected String password;
-	
-	
-	
+
+
+
 	public NesstarServer (URI serverURI) throws IOException, URISyntaxException {
 		loadParams();
 		this.nesstarDB = NesstarDBFactory.getInstance();
@@ -28,33 +28,33 @@ public class NesstarServer {
 		this.server.login(username, password);
 
 	}
-	
+
 	public void loadParams() throws URISyntaxException {
-	    Properties props = new Properties();
-	    InputStream is = null;
-	 
-	    // First try loading from the current directory
-	    try {
-	        File f = new File("server.properties");
-	        is = new FileInputStream( f );
-	    }
-	    catch ( Exception e ) { is = null; }
-	 
-	    try {
-	        if ( is == null ) {
-	            // Try loading from classpath
-	            is = getClass().getResourceAsStream("server.properties");
-	        }
-	 
-	        // Try loading properties from the file (if found)
-	        props.load( is );
-	    }
-	    catch ( Exception e ) { }
-	 
-	    serverURI = new URI(props.getProperty("ServerAddress"));
-	    username = new String(props.getProperty("username"));
-	    password  = new String(props.getProperty("password"));
+		Properties props = new Properties();
+		InputStream is = null;
+
+		// First try loading from the current directory
+		try {
+			File f = new File("server.properties");
+			is = new FileInputStream( f );
+		}
+		catch ( Exception e ) { is = null; }
+
+		try {
+			if ( is == null ) {
+				// Try loading from classpath
+				is = getClass().getResourceAsStream("server.properties");
+			}
+
+			// Try loading properties from the file (if found)
+			props.load( is );
+		}
+		catch ( Exception e ) { }
+
+		serverURI = new URI(props.getProperty("ServerAddress"));
+		username = new String(props.getProperty("username"));
+		password  = new String(props.getProperty("password"));
 	}
-	
+
 
 }
