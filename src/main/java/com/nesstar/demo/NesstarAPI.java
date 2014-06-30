@@ -1,6 +1,7 @@
 package com.nesstar.demo;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,6 +67,11 @@ public final class NesstarAPI extends NesstarServer{
 					System.out.println("Launching... "+args[0]);
 				}
 				
+				if(args[0].equals("deleteAllStudies")){
+					nesstarAPI.deleteAllStudies();
+					System.out.println("Launching... "+args[0]);
+				}
+				
 				if(args[0].equals("getAllStudiesDDIs")){
 					nesstarAPI.getAllStudiesDDIs(args[1]); //arg is path where DDIs are saved
 					System.out.println("Launching... "+args[0]);
@@ -83,6 +89,17 @@ public final class NesstarAPI extends NesstarServer{
 
 	public void publishStudy(String DDIresourceName) throws IOException, PublishingException, NotAuthorizedException, URISyntaxException, DDIparsingException, InconsistentDDIException, MalformedDDIexception {
 		
+		
+		File file = new File(DDIresourceName);
+		FileInputStream fis = null;
+ 
+		try {
+			fis = new FileInputStream(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		try {
 			StudyPublishingBuilder builder = new StudyPublishingBuilder();
 			InputStream ddiFileEN = Thread.currentThread().getContextClassLoader().getResourceAsStream(DDIresourceName);
@@ -90,7 +107,9 @@ public final class NesstarAPI extends NesstarServer{
 			//File csvFile = new File(Thread.currentThread().getContextClassLoader().getResource("com/nesstar/api/impl/test-gor/test!gor_F1.csv").toURI());
 
 			//builder.addDDI(ddiFileNO);
-			builder.addDDI(ddiFileEN);
+			//builder.addDDI(ddiFileEN);
+			builder.addDDI(fis);
+			
 			//builder.addData(new CSVFileDataSource(csvFile, "UTF-8"), "test_gor");
 
 			//builder.setDefaultLanguage(new Locale("en"));
@@ -147,6 +166,17 @@ public final class NesstarAPI extends NesstarServer{
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void deleteAllStudies() throws NotAuthorizedException, IOException {
+		
+		for (Study study : allStudies) {
+			
+			server.deleteStudy(study.getId());
+
+		}
+		
+		
 	}
 
 
