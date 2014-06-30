@@ -23,8 +23,8 @@ public class NesstarServer {
 
 	public NesstarServer () throws IOException, URISyntaxException {
 		loadParams();
-		this.nesstarDB = NesstarDBFactory.getInstance();
 		this.server = nesstarDB.getServer(serverURI);
+		this.nesstarDB = NesstarDBFactory.getInstance();
 		this.server.login(username, password);
 
 	}

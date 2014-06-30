@@ -47,29 +47,30 @@ public final class NesstarAPI extends NesstarServer{
 		try {
 			nesstarAPI = new NesstarAPI();
 			
+			if(args.length != 0){
 
-			if(args[0].equals("publishStudy")){
-				nesstarAPI.publishStudy(args[1]);
-				System.out.println("Launching... "+args[0]);
+				if(args[0].equals("publishStudy")){
+					nesstarAPI.publishStudy(args[1]);
+					System.out.println("Launching... "+args[0]);
+				}
+				
+				if(args[0].equals("listStudies")){
+					String studyListText = nesstarAPI.getListText();
+					System.out.println("Launching... "+args[0]);
+					System.out.println(studyListText);
+				}
+				
+				
+				if(args[0].equals("deleteStudy")){
+					nesstarAPI.deleteStudy(args[1]);
+					System.out.println("Launching... "+args[0]);
+				}
+				
+				if(args[0].equals("getAllStudiesDDIs")){
+					nesstarAPI.getAllStudiesDDIs(args[1]); //arg is path where DDIs are saved
+					System.out.println("Launching... "+args[0]);
+				}
 			}
-			
-			if(args[0].equals("listStudies")){
-				String studyListText = nesstarAPI.getListText();
-				System.out.println("Launching... "+args[0]);
-				System.out.println(studyListText);
-			}
-			
-			
-			if(args[0].equals("deleteStudy")){
-				nesstarAPI.deleteStudy(args[1]);
-				System.out.println("Launching... "+args[0]);
-			}
-			
-			if(args[0].equals("getAllStudiesDDIs")){
-				nesstarAPI.getAllStudiesDDIs(args[1]); //arg is path where DDIs are saved
-				System.out.println("Launching... "+args[0]);
-			}
-			
 			
 			
 
@@ -81,7 +82,7 @@ public final class NesstarAPI extends NesstarServer{
 
 
 	public void publishStudy(String DDIresourceName) throws IOException, PublishingException, NotAuthorizedException, URISyntaxException, DDIparsingException, InconsistentDDIException, MalformedDDIexception {
-
+		
 		try {
 			StudyPublishingBuilder builder = new StudyPublishingBuilder();
 			InputStream ddiFileEN = Thread.currentThread().getContextClassLoader().getResourceAsStream(DDIresourceName);
